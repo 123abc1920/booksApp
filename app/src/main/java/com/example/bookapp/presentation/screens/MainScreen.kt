@@ -68,10 +68,11 @@ fun MainScreen(navController: NavController) {
     }
 
     mService = Consts.service
+    //getAllBooksList("happy")
 }
 
-private fun getAllBooksList() {
-    mService.getBooksList().enqueue(object : Callback<BooksResponse> {
+private fun getAllBooksList(target: String) {
+    mService.getBooksList(target).enqueue(object : Callback<BooksResponse> {
         override fun onFailure(call: Call<BooksResponse>, t: Throwable) {
         }
 
