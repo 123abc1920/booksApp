@@ -18,11 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import com.example.bookapp.presentation.theme.BookAppTheme
 
-@Preview(showBackground = true)
 @Composable
-fun DetailedInfoScreen() {
+fun DetailedInfoScreen(navController: NavController) {
     BookAppTheme {
         Column {
             Row {

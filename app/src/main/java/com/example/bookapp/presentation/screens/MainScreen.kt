@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.TextField
 import androidx.compose.material3.Text
@@ -13,13 +14,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import com.example.bookapp.presentation.theme.BookAppTheme
 
-@Preview(showBackground = true)
 @Composable
-fun MainScreen() {
+fun MainScreen(navController: NavController) {
     var text by remember { mutableStateOf("") }
     BookAppTheme {
         Column {
@@ -34,21 +37,25 @@ fun MainScreen() {
                     text = "Введите название книги",
                     modifier = Modifier
                         .fillMaxHeight(0.8f)
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
                 )
             }
-            Row {
-                Button(onClick = {}) {
-                    Text(
-                        "Поиск",
-                        modifier = Modifier.fillMaxWidth(0.5f)
-                    )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.Bottom
+            ) {
+                Button(
+                    onClick = {},
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text("Поиск")
                 }
-                Button(onClick = {}) {
-                    Text(
-                        "Избранное",
-                        modifier = Modifier.fillMaxWidth(0.5f)
-                    )
+                Button(
+                    onClick = {},
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text("Избранное")
                 }
             }
         }
