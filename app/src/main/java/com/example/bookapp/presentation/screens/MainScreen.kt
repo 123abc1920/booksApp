@@ -46,13 +46,13 @@ fun MainScreen(navController: NavController) {
                 verticalAlignment = Alignment.Bottom
             ) {
                 Button(
-                    onClick = {},
+                    onClick = {navController.navigate("home")},
                     modifier = Modifier.weight(1f)
                 ) {
                     Text("Поиск")
                 }
                 Button(
-                    onClick = {},
+                    onClick = {navController.navigate("favourite")},
                     modifier = Modifier.weight(1f)
                 ) {
                     Text("Избранное")

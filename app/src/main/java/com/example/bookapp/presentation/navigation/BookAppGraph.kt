@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.bookapp.presentation.screens.DetailedInfoScreen
+import com.example.bookapp.presentation.screens.FavouriteScreen
 import com.example.bookapp.presentation.screens.MainScreen
 
 @Composable
@@ -23,6 +24,9 @@ fun BookAppGraph(
         }
         composable("detailedInfo") {
             DetailedInfoScreen(navController)
+        }
+        composable("favourite") {
+            FavouriteScreen(navController)
         }
     }
 }
