@@ -1,26 +1,28 @@
 package com.example.bookapp.presentation.screens
 
 import android.R
-import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.TextField
 import androidx.compose.material3.Text
@@ -34,18 +36,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
-import coil.request.ImageRequest
-import com.bumptech.glide.Glide
 import com.example.bookapp.data.remotebooks.Consts
 import com.example.bookapp.data.remotebooks.Service
 import com.example.bookapp.data.remotebooks.models.BooksResponse
@@ -76,36 +72,54 @@ fun MainScreen(navController: NavController) {
     }
 
     BookAppTheme {
-        Column {
+        Column(modifier = Modifier.padding(16.dp)) {
             Column {
                 TextField(
                     value = text,
                     onValueChange = { newText -> text = newText },
                     label = { Text("Поиск") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
             Column(
                 content = {
                     volumess?.let { BookListItem(it, navController) }
                 },
-                modifier = Modifier.fillMaxHeight(0.8f)
+                modifier = Modifier
+                    .fillMaxHeight(0.8f)
+                    .fillMaxWidth(1f)
             )
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.Bottom
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.Center
             ) {
-                Button(
+                IconButton(
                     onClick = { navController.navigate("home") },
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Поиск")
+                    Column(verticalArrangement = Arrangement.Center) {
+                        Icon(
+                            Icons.Filled.Search,
+                            contentDescription = "Информация о приложении",
+                            tint = Color(red = 0x00, green = 0xAC, blue = 0xFF, alpha = 0xFF)
+                        )
+                        Text(
+                            "Поиск",
+                            color = Color(red = 0x00, green = 0xAC, blue = 0xFF, alpha = 0xFF)
+                        )
+                    }
                 }
-                Button(
+                IconButton(
                     onClick = { navController.navigate("favourite") },
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Избранное")
+                    Column(verticalArrangement = Arrangement.Center) {
+                        Icon(Icons.Filled.Done, contentDescription = "Информация о приложении")
+                        Text("Избранное")
+                    }
                 }
             }
         }
@@ -114,31 +128,75 @@ fun MainScreen(navController: NavController) {
 
 @Composable
 fun BookListItem(volumes: List<Volume>, navController: NavController) {
-    var detailScreen by remember { mutableStateOf(false) }
-
     LazyColumn(
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+        modifier = Modifier.fillMaxWidth(1f)
     ) {
-        items(volumes.size) { index ->
-            Column(
-                modifier = Modifier
-                    .background(Color.Transparent)
-                    .clickable {
-                        NowVol.vol = volumes.get(index)
-                        navController.navigate("detailedInfo")
-                    }) {
-                AsyncImage(
-                    model = volumes.get(index).volumeInfo.imageLinks.thumbnail.toString(),
-                    contentDescription = "Image description",
-                    modifier = Modifier
-                        .clipToBounds()
-                        .height(180.dp)
-                        .width(128.dp)
-                        .layoutId("imageSection")
-                        .clip(RoundedCornerShape(8.dp)),
-                    error = painterResource(id = R.drawable.star_on),
-                )
-                Text(text = volumes.get(index).volumeInfo.title)
+        items(volumes.size / 2) { index ->
+            if (index % 2 == 0) {
+                Row {
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .background(Color.Transparent)
+                            .clickable {
+                                NowVol.vol = volumes.get(index)
+                                navController.navigate("detailedInfo")
+                            }) {
+                        Box {
+                            AsyncImage(
+                                model = volumes.get(index).volumeInfo.imageLinks.thumbnail.toString(),
+                                contentDescription = "Image description",
+                                modifier = Modifier
+                                    .clipToBounds()
+                                    .height(180.dp)
+                                    .width(128.dp)
+                                    .layoutId("imageSection")
+                                    .clip(RoundedCornerShape(8.dp)),
+                                error = painterResource(id = R.drawable.star_on),
+                            )
+                            IconButton(onClick = { }, modifier = Modifier.align(Alignment.TopEnd)) {
+                                Icon(Icons.Filled.Done, contentDescription = "")
+                            }
+                        }
+                        Text(text = volumes.get(index).volumeInfo.title)
+                    }
+                    if (index + 1 < volumes.size) {
+                        Column(
+                            modifier = Modifier
+                                .weight(1f)
+                                .background(Color.Transparent)
+                                .clickable {
+                                    NowVol.vol = volumes.get(index + 1)
+                                    navController.navigate("detailedInfo")
+                                }) {
+                            Box {
+                                AsyncImage(
+                                    model = volumes.get(index + 1).volumeInfo.imageLinks.thumbnail.toString(),
+                                    contentDescription = "Image description",
+                                    modifier = Modifier
+                                        .clipToBounds()
+                                        .height(180.dp)
+                                        .width(128.dp)
+                                        .layoutId("imageSection")
+                                        .clip(RoundedCornerShape(8.dp)),
+                                    error = painterResource(id = R.drawable.star_on),
+                                    alignment = Alignment.Center
+                                )
+                                IconButton(
+                                    onClick = { },
+                                    modifier = Modifier.align(Alignment.TopEnd)
+                                ) {
+                                    Icon(Icons.Filled.Done, contentDescription = "")
+                                }
+                            }
+                            Text(
+                                text = volumes.get(index + 1).volumeInfo.title,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                }
             }
         }
     }
